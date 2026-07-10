@@ -1,6 +1,6 @@
 {
   "name": "@1tempmail/mcp-server",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "MCP Server for 1TempMail - Generate temporary emails, check inboxes, and read messages via AI assistants",
   "type": "module",
   "main": "dist/index.js",
@@ -24,6 +24,14 @@
     "cursor",
     "ai"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/haskx/1tempmail-mcp-server.git"
+  },
+  "homepage": "https://github.com/haskx/1tempmail-mcp-server#readme",
+  "bugs": {
+    "url": "https://github.com/haskx/1tempmail-mcp-server/issues"
+  },
   "license": "MIT",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.1"
