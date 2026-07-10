@@ -1,0 +1,38 @@
+{
+  "name": "@1tempmail/mcp-server",
+  "version": "1.0.0",
+  "description": "MCP Server for 1TempMail - Generate temporary emails, check inboxes, and read messages via AI assistants",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "1tempmail-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js"
+  },
+  "keywords": [
+    "mcp",
+    "temp-mail",
+    "temporary-email",
+    "disposable-email",
+    "claude",
+    "cursor",
+    "ai"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "typescript": "^5.7.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
