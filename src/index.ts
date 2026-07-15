@@ -31,7 +31,13 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
           "Generate a new temporary email address. The email remains active for 60 minutes and can receive messages during that time.",
         inputSchema: {
           type: "object",
-          properties: {},
+          properties: {
+            domain: {
+              type: "string",
+              description:
+                "Preferred domain for the email address. If omitted, a random domain is assigned.",
+            },
+          },
         },
       },
       {
@@ -41,12 +47,12 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         inputSchema: {
           type: "object",
           properties: {
-            sid_token: {
+            token: {
               type: "string",
               description: "The session token returned by generate_email.",
             },
           },
-          required: ["sid_token"],
+          required: ["token"],
         },
       },
       {
@@ -56,7 +62,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         inputSchema: {
           type: "object",
           properties: {
-            sid_token: {
+            token: {
               type: "string",
               description: "The session token returned by generate_email.",
             },
@@ -65,7 +71,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
               description: "The message ID from check_inbox.",
             },
           },
-          required: ["sid_token", "message_id"],
+          required: ["token", "message_id"],
         },
       },
     ],
@@ -90,7 +96,12 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
   try {
     switch (name) {
       case "generate_email": {
-        const result = await callMcp("generate_email", {});
+        const params: Record<string, unknown> = {};
+        const domain = args?.domain as string | undefined;
+        if (domain) {
+          params.domain = domain;
+        }
+        const result = await callMcp("generate_email", params);
         return {
           content: [
             {
@@ -102,14 +113,14 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case "check_inbox": {
-        const sidToken = args?.sid_token as string;
-        if (!sidToken) {
+        const token = args?.token as string;
+        if (!token) {
           return {
-            content: [{ type: "text", text: "Error: sid_token is required" }],
+            content: [{ type: "text", text: "Error: token is required" }],
             isError: true,
           };
         }
-        const result = await callMcp("check_inbox", { sid_token: sidToken });
+        const result = await callMcp("check_inbox", { token });
         return {
           content: [
             {
@@ -121,21 +132,21 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case "get_message": {
-        const sidToken = args?.sid_token as string;
+        const token = args?.token as string;
         const messageId = args?.message_id as string;
-        if (!sidToken || !messageId) {
+        if (!token || !messageId) {
           return {
             content: [
               {
                 type: "text",
-                text: "Error: sid_token and message_id are required",
+                text: "Error: token and message_id are required",
               },
             ],
             isError: true,
           };
         }
         const result = await callMcp("get_message", {
-          sid_token: sidToken,
+          token,
           message_id: messageId,
         });
         return {
